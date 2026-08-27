@@ -1,0 +1,2 @@
+# Python dependencies for Oracle AI Vector Search – Smart Document Q&A System
+# Packages will be added as development progresses.
