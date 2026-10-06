@@ -6,3 +6,6 @@ pypdf
 
 # Embedding model: sentence-transformers/all-MiniLM-L6-v2
 sentence-transformers
+
+# LLM answer generation
+openai
