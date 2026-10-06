@@ -9,3 +9,9 @@ sentence-transformers
 
 # LLM answer generation
 openai
+
+# REST API backend
+fastapi
+uvicorn
+python-multipart
+httpx
