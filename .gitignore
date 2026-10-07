@@ -73,3 +73,20 @@ logs/
 
 # Node (frontend)
 node_modules/
+frontend/dist/
+
+# Oracle client wallet. Never commit these files.
+wallet/
+Wallet/
+*cwallet*
+*ewallet*
+*.sso
+*.p12
+tnsnames.ora
+sqlnet.ora
+ojdbc.properties
+keystore.jks
+truststore.jks
+
+# Hosting
+.vercel/

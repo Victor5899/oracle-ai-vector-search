@@ -1,0 +1,29 @@
+# Render web service for the FastAPI backend.
+# Secret values are entered in the Render dashboard (sync: false).
+# Do not put credentials, the wallet, or a frontend URL in this file.
+
+services:
+  - type: web
+    name: oracle-ai-vector-search-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_DSN
+        sync: false
+      - key: WALLET_DIR
+        sync: false
+      - key: WALLET_PASSWORD
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false

@@ -66,8 +66,8 @@ def check_database(timeout: float = DB_CHECK_TIMEOUT_SECONDS) -> bool:
         except FutureTimeoutError:
             logger.warning("Database health probe timed out after %ss", timeout)
             return False
-        except Exception:
-            logger.exception("Database health probe failed")
+        except Exception as error:
+            logger.error("Database health probe failed (%s)", type(error).__name__)
             return False
         finally:
             executor.shutdown(wait=False)

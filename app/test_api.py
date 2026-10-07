@@ -71,6 +71,26 @@ def test_health_reports_ok_when_database_is_reachable(client):
     }
 
 
+def test_cors_discards_a_wildcard_origin():
+    from app.main import allowed_origins
+
+    assert allowed_origins("*") == []
+    assert allowed_origins(" * , https://app.example/ ") == ["https://app.example"]
+    assert allowed_origins("https://a.example,https://a.example") == ["https://a.example"]
+
+
+def test_cors_does_not_allow_an_unlisted_origin(client):
+    _use_fake_service(check_database=lambda: True)
+
+    response = client.get(
+        "/health",
+        headers={"Origin": "https://not-allowed.example"},
+    )
+
+    assert response.headers.get("access-control-allow-origin") != "*"
+    assert response.headers.get("access-control-allow-origin") != "https://not-allowed.example"
+
+
 def test_health_reports_degraded_when_database_is_unreachable(client):
     _use_fake_service(check_database=lambda: False)
 

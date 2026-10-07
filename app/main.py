@@ -2,12 +2,13 @@
 FastAPI routes for the Oracle AI Vector Search project.
 
 Routes stay thin: they validate input, call app.service, and translate
-application errors into HTTP responses. Internal details such as driver
-messages, credentials, wallet paths and stack traces are logged but
-never returned to the client.
+application errors into HTTP responses. Failure logs name the exception
+type only. Credential values, wallet passwords and stack traces are not
+written to the log or returned to the client.
 """
 
 import logging
+import os
 from types import ModuleType
 
 import oracledb
@@ -15,6 +16,7 @@ import rag
 from chunker import EmptyTextError
 from document_processor import EmptyDocumentError, UnsupportedFileTypeError
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import schemas, service
@@ -25,6 +27,38 @@ app = FastAPI(
     title="Oracle AI Vector Search - Smart Document Q&A",
     description="Document ingestion and semantic question answering.",
     version="0.8.0",
+)
+
+
+def allowed_origins(raw: str | None = None) -> list[str]:
+    """Browser origins permitted to call this API.
+
+    CORS_ORIGINS is a comma-separated list of exact origins, for example
+    the Vercel site. A wildcard is discarded so the API never allows
+    every origin. Local Vite development does not need this: the dev
+    server proxies /api and the browser stays same-origin.
+    """
+    if raw is None:
+        raw = os.getenv("CORS_ORIGINS", "")
+
+    origins: list[str] = []
+    seen: set[str] = set()
+    for part in raw.split(","):
+        origin = part.strip().rstrip("/")
+        if not origin or origin == "*":
+            continue
+        if origin not in seen:
+            seen.add(origin)
+            origins.append(origin)
+    return origins
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins(),
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Accept", "Content-Type"],
 )
 
 
@@ -64,25 +98,25 @@ def _handle_no_chunks(request: Request, error: Exception) -> JSONResponse:
 
 @app.exception_handler(rag.MissingConfigurationError)
 def _handle_missing_configuration(request: Request, error: Exception) -> JSONResponse:
-    logger.error("Answer generation is not configured: %s", error)
+    logger.error("Answer generation is not configured (%s)", type(error).__name__)
     return _error(503, "Answer generation is not configured on the server.")
 
 
 @app.exception_handler(rag.LLMError)
 def _handle_llm_error(request: Request, error: Exception) -> JSONResponse:
-    logger.error("Language model request failed: %s", error)
+    logger.error("Language model request failed (%s)", type(error).__name__)
     return _error(502, "The language model could not be reached.")
 
 
 @app.exception_handler(oracledb.Error)
 def _handle_database_error(request: Request, error: Exception) -> JSONResponse:
-    logger.exception("Database operation failed")
+    logger.error("Database operation failed (%s)", type(error).__name__)
     return _error(503, "The database is currently unavailable.")
 
 
 @app.exception_handler(rag.RagError)
 def _handle_rag_error(request: Request, error: Exception) -> JSONResponse:
-    logger.exception("Question answering failed")
+    logger.error("Question answering failed (%s)", type(error).__name__)
     return _error(500, "The question could not be answered.")
 
 

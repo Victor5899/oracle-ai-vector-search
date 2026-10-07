@@ -1,9 +1,10 @@
 """
 Database connection layer for the Oracle AI Vector Search project.
 
-Loads Oracle connection settings from the project's root .env file and
-exposes get_connection() to create a new python-oracledb (thin mode)
-connection using an Oracle Wallet for authentication.
+Connection settings come from the process environment. A root .env file
+is loaded for local development and does not override variables that are
+already set. get_connection() opens a new python-oracledb thin-mode
+connection using the Oracle wallet directory in WALLET_DIR.
 
 No connection is opened at import time, and no credentials are ever
 printed or logged.
@@ -43,7 +44,7 @@ def _load_config() -> dict:
     if missing:
         raise RuntimeError(
             "Missing required environment variable(s): "
-            f"{', '.join(missing)}. Check your .env file."
+            f"{', '.join(missing)}."
         )
 
     wallet_dir = Path(config["WALLET_DIR"]).expanduser()

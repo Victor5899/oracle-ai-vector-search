@@ -15,3 +15,10 @@ fastapi
 uvicorn
 python-multipart
 httpx
+
+# Oracle thin-mode mTLS connection
+oracledb
+
+# Loads the local .env file. Does not override variables already set
+# in the environment, so production hosts can inject secrets directly.
+python-dotenv

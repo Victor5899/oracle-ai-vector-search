@@ -8,7 +8,10 @@
 
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').trim()
 
-/** Relative by default, so the dev server proxy keeps requests same-origin. */
+/**
+ * Deployed API origin when VITE_API_BASE_URL is set.
+ * Blank locally, so requests use /api and the Vite dev proxy.
+ */
 export const API_BASE_URL = (configuredBaseUrl || '/api').replace(/\/+$/, '')
 
 const NETWORK_MESSAGE =
