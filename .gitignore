@@ -70,3 +70,6 @@ logs/
 *.tmp
 *.temp
 .cache/
+
+# Node (frontend)
+node_modules/

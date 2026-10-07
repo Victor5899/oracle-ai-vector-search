@@ -1,0 +1,21 @@
+{
+  "name": "oracle-ai-vector-search-frontend",
+  "private": true,
+  "version": "0.9.0",
+  "type": "module",
+  "description": "Frontend for the Oracle AI Vector Search Smart Document Q&A System.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.456.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.2.0",
+    "vite": "^7.3.7"
+  }
+}

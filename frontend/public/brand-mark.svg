@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Oracle AI Vector Search">
+  <rect width="32" height="32" rx="8" fill="#151817" />
+  <path
+    d="M11 7.5h7.2L23 12v12.5H11z"
+    fill="none"
+    stroke="#D6A85F"
+    stroke-width="1.6"
+    stroke-linejoin="round"
+  />
+  <path d="M18 7.5V12h5" fill="none" stroke="#D6A85F" stroke-width="1.6" stroke-linejoin="round" />
+  <path d="M13.8 20.4l3.1-4 3.2 2.1" fill="none" stroke="#8FAF82" stroke-width="1.4" stroke-linecap="round" />
+  <circle cx="13.8" cy="20.4" r="1.5" fill="#D6A85F" />
+  <circle cx="16.9" cy="16.4" r="1.5" fill="#E7B96E" />
+  <circle cx="20.1" cy="18.5" r="1.5" fill="#8FAF82" />
+</svg>
